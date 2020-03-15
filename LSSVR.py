@@ -1,6 +1,15 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+
+class LSSVM:
+
+    def __init__(self, gamma, kernel_name, **kernel_params):
+        self.gamma = gamma
+        self.x = None
+        self.y = None
+        self.alpha = None
+        self.bias = None
+        self.kernel = self.get_kernel(kernel_name)
+        self.kernel_params = kernel_params
 
 class LSSVR:
 
@@ -82,6 +91,9 @@ class LSSVR:
 
 def test():
 
+    from sklearn.model_selection import train_test_split
+    import matplotlib.pyplot as plt
+
     # preparing the training data
 
     n = 1000
@@ -104,6 +116,3 @@ def test():
     plt.plot(X_train, y_train, '.')
     plt.plot(X_test, y_pred, '.')
     plt.show()
-
-
-test()
