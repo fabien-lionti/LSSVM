@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 class LSSVR:
 
@@ -62,6 +64,12 @@ class LSSVR:
         alpha = params[1:]
         return alpha, bias
 
+    def rmse(self, Y_train, Y_test):
+        N = len(Y_train)
+        residual = (Y_train - Y_test)**2
+        RMSE = np.sqrt(np.sum(residual/N))
+        return RMSE
+
     def fit(self, x, y):
         self.x = x
         self.alpha, self.bias = self.get_params(x, y)
@@ -71,3 +79,25 @@ class LSSVR:
         K = self.kernel(self.x, x_test)
         output = np.dot(K, self.alpha) + self.bias
         return output
+
+def test():
+
+    # preparing the training data
+
+    n = 1000
+    mu = 0
+    sigma_ = 0.5
+    noise = np.random.normal(mu, sigma_, n).reshape(n,1)
+    X = np.array(np.linspace(1,4*np.pi,n)).reshape(n,1)
+    Y = np.sin(X) + noise
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+    # Training
+
+    lssvr = LSSVR(gamma=10, kernel_name="rbf", sigma=1)
+    lssvr.fit(X_train, y_train)
+    y_pred = lssvr.predict(X_test)
+    rms = lssvr.rmse(y_pred,y_test)
+    print('Error : '+str(rms))
+
+test()
