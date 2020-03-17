@@ -35,15 +35,15 @@ class LSSVR:
 
     def polynomial(self, x, y):
         d = self.kernel_params['d']
-        return (np.dot(x, y.T) + 1) ** d
+        return (np.dot(y,x.T) + 1) ** d
 
     def linear(self, x, y):
-        return np.dot(x, y.T)
+        return np.dot(y, x.T)
 
     def tanh(self, x, y):
         k = self.kernel_params['k']
         phi = self.kernel_params['phi']
-        return np.tanh(k * np.dot(x, y.T) + phi)
+        return np.tanh(k * np.dot(y, x.T) + phi)
 
     def get_kernel(self, kernel_name):
         kernel_list = {
